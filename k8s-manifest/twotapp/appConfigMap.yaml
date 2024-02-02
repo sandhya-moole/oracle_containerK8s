@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  dbconn: sandhyadb-lb
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: sandhya-app-connect

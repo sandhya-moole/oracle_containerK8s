@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sandhya-splunk-ingress
+  namespace: sandhyasplunkns
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx #name of the ingress controller
+  rules:
+  - host: sandhya.adhocnet.org #adhocnet.org is domain name of trainer
+    http:
+      paths:
+      - path: / # app path which is homepage
+        pathType: Prefix
+        backend:
+          service:
+            name: sandhyasplunksvc # name of webapp svc 
+            port:
+              number: 8000 # port of webapp svc

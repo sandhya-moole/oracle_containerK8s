@@ -1,0 +1,64 @@
+# creating secret manifest
+apiVersion: v1
+data:
+  MYSQL_PASSWORD: b2tleUAxMjM=
+  MYSQL_ROOT_PASSWORD: SGVsbG9yb290QDA5OA==
+  MYSQL_USER: c2FuZGh5YQ==
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: sandhya-app-db
+
+# deployment manifest
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: sandhya-mysqldb
+  name: sandhya-mysqldb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sandhya-mysqldb
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: sandhya-mysqldb
+    spec:
+      containers:
+      - image: mysql:8.0
+        name: mysql
+        ports:
+        - containerPort: 3306
+        envFrom: # calling secret info 
+        - secretRef: 
+            name: sandhya-app-db
+        resources:
+          limits:
+            memory: 1G
+            cpu: 500m
+status: {}
+# creating svc for db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: sandhya-mysqldb
+  name: sandhyadb-lb
+spec:
+  ports:
+  - port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    app: sandhya-mysqldb
+  type: ClusterIP
+status:
+  loadBalancer: {}

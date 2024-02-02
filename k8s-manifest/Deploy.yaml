@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: sandhya-app-deploy
+  name: sandhya-app-deploy #name of the deployment
+spec:
+  replicas: 1 # default number of pods
+  selector:
+    matchLabels:
+      app: sandhya-app-deploy
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: sandhya-app-deploy
+    spec:
+      containers: #containers of pod
+      - image: sandhyamoole/sandhya-oracleweb:linuxamdv1
+        name: sandhya-oracleweb
+        ports:
+        - containerPort: 80
+        resources: {}
+status: {}

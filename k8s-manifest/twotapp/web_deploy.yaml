@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: sandhya-web
+  name: sandhya-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sandhya-web
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: sandhya-web
+    spec:
+      containers:
+      - image: wordpress:6.2.1-apache #image not working!
+        name: wordpress
+        ports:
+        - containerPort: 80
+        env: #using env to connect to db
+        - name: WORDPRESS_DB_HOST
+          #value: sandhyadb-lb # service name of the lb as both are in same namespace
+          valueFrom: # reading value of DB host from ConfigMAP
+            configMapKeyRef:
+              name: sandhya-app-connect
+              key: dbconn
+        - name: WORDPRESS_DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: sandhya-app-db #name of the secret
+              key: MYSQL_USER
+        - name: WORDPRESS_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: sandhya-app-db
+              key: MYSQL_PASSWORD
+        resources: {}
+status: {}

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: sandhya-splunk-web
+  name: sandhya-splunk-web
+  namespace: sandhyasplunkns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sandhya-splunk-web
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: sandhya-splunk-web
+    spec:
+      containers:
+      - image: splunk/splunk:latest
+        name: splunk
+        ports:
+        - containerPort: 8000
+        env: 
+        - name: SPLUNK_START_ARGS
+          valueFrom:
+            configMapKeyRef:
+              name: sandhya-splunk-config
+              key: splunkarg
+        - name: SPLUNK_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: sandhya-splunk-secret
+              key: MY_PASSWORD
+        resources: {}
+status: {}

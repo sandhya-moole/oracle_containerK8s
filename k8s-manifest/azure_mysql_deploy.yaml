@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: sandhya-mysql
+  name: sandhya-mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sandhya-mysql
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: sandhya-mysql
+    spec:
+      imagePullSecrets:
+      - name: sandhya-cred-reg
+      containers:
+      - image: ashuoracle.azurecr.io/mysql:amd64
+        name: mysql
+        # Not a good way
+        #env: 
+        #- name: MYSQL_ROOT_PASSWORD
+         # value: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: MYSQL_ROOT_PASSWORD
+        ports:
+        - containerPort: 80
+        resources: {}
+status: {}

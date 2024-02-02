@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: sandhya-splunk-web
+  name: sandhyasplunksvc
+  namespace: sandhyasplunkns
+spec:
+  ports:
+  - port: 8000
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    app: sandhya-splunk-web
+  type: NodePort
+status:
+  loadBalancer: {}

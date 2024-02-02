@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: sandhya-storage
+  name: sandhya-storage
+spec:
+  nodeName: aks-agentpool-31845344-vmss000002
+  volumes: #for creating volumes
+  - name: sandhyavol1
+    hostPath: # taking storage from the node where pod got scheduled
+      path: /data/sandhya-storage
+      type: DirectoryOrCreate # if above location is not present then directory is created.
+  containers: # for creating containers
+  - image: alpine
+    name: sandhya-storage
+    command: ["sh","-c","while true;do echo hello `date +%T` >>/mnt/sandhya/time.txt;sleep 10;done"]
+    resources: {}
+    volumeMounts: # to attach storage
+    - name: sandhyavol1
+      mountPath: /mnt/sandhya
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

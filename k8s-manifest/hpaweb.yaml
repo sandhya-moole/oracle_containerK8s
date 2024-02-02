@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: sandhya-hpaweb
+  name: sandhya-hpaweb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sandhya-hpaweb
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: sandhya-hpaweb
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: 100m
+            memory: 200M
+status: {}
